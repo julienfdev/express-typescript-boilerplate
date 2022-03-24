@@ -5,7 +5,7 @@ import logger from "morgan";
 import cookieParser from "cookie-parser";
 
 // Routers
-import indexRouter from "@/routes/Index";
+import indexRouter from "@/routes/Routes";
 const app = express();
 
 // view engine setup
