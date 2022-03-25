@@ -12,10 +12,10 @@ export default ({db}: TInput) => {
             db
         )
         .then(() => {
-            return console.info('Connection à ${db} reussi');
+            return console.log('Connecté a la bd : ', db);
         })
         .catch(error => {
-            console.error('Connection echouée', error);
+            console.log('Connection echouée a la bd : ', error);
             return process.exit(1);
         })
     }
