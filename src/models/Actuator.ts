@@ -1,5 +1,4 @@
 import { Schema, model, connect } from "mongoose";
-import { type } from "os";
 
 export enum ActuatorType{
     BLINDS,
