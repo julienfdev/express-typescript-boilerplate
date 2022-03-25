@@ -1,7 +1,6 @@
 import { Schema, model, connect } from "mongoose";
 
 type User = {
-    id: number | string
     email: string
     password: string
     username: string
