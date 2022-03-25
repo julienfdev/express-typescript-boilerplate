@@ -1,22 +1,29 @@
 import { NextFunction, Request, Response } from "express";
+import UserModel from "../models/User";
 
 export default {
-  get: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json({ message: "Get User work" });
-      return;
-    } catch (error) {
-      next(error);
-    }
-  },
+  allUsers: async (req: Request, res: Response, next: NextFunction) => {
+    const users = UserModel.find((err: any, users: any) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(users);
+      }
+  },)},
+ 
   post: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json({ message: "Post User work" });
-      return;
-    } catch (error) {
-      next(error);
+    const user = new UserModel(req.body);
+    user.save((err: any) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(user);
     }
-  },
+  });
+},}
+
+
+/*
   patch: async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.json({ message: "Patch User work" });
@@ -32,5 +39,4 @@ export default {
     } catch (error) {
       next(error);
     }
-  },
-};
+  },*/
