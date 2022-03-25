@@ -24,3 +24,5 @@ const schemaSensor = new Schema<Sensor>({
   });
 
 const SensorModel = model<Sensor>('Sensor', schemaSensor);
+
+export default SensorModel;

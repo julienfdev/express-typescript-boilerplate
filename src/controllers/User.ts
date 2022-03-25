@@ -51,7 +51,7 @@ deleteUser: async (req: Request, res: Response, next: NextFunction) => {
     if (err) {
       res.send(err);
     } else {
-      res.send("User deleted from database");
+      res.send("L'utlisateur a été supprimé");
     }
   });
 },
