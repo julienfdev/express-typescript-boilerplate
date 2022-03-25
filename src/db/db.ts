@@ -50,3 +50,12 @@ type ApiResponse = {
     data?: Record<string, any>
     error?: Error
 }
+
+const schema = new Schema<User>({
+    id: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true },
+    username: { type: String, required: true }
+  });
+
+const UserModel = model<User>('User', schema);
