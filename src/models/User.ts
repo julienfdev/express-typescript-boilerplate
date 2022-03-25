@@ -8,7 +8,6 @@ type User = {
 }
 
 const schema = new Schema<User>({
-    id: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
     username: { type: String, required: true }
