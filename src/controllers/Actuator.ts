@@ -1,36 +1,58 @@
 import { NextFunction, Request, Response } from "express";
-
+import ActuatorModel from "../models/Actuator"
 export default {
-  get: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json({ message: "Get Actuator work" });
-      return;
-    } catch (error) {
-      next(error);
-    }
+  allActuators: async (req: Request, res: Response, next: NextFunction) => {
+    const sensors = ActuatorModel.find((err: any, actuators: any) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(actuators);
+      }
+    },)
   },
-  post: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json({ message: "Post Actuator work" });
-      return;
-    } catch (error) {
-      next(error);
-    }
+
+  oneActuator: async (req: Request, res: Response, next: NextFunction) => {
+    const sensor = ActuatorModel.findById(req.params.id, (err: any, actuator: any) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(actuator);
+      }
+    },)
   },
-  patch: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json({ message: "Patch Actuator work" });
-      return;
-    } catch (error) {
-      next(error);
-    }
+
+  postActuator: async (req: Request, res: Response, next: NextFunction) => {
+    const actuator = new ActuatorModel(req.body);
+    actuator.save((err: any) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(actuator);
+      }
+    })
   },
-  delete: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json({ message: "Delete Actuator work" });
-      return;
-    } catch (error) {
-      next(error);
-    }
+
+  updateActuator: async (req: Request, res: Response, next: NextFunction) => {
+    let actuator = ActuatorModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      (err: any, actuator: any) => {
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(actuator);
+        }
+      }
+    )
+  },
+
+  deleteActuator: async (req: Request, res: Response, next: NextFunction) => {
+    const actuator = ActuatorModel.deleteOne({ _id: req.params.id}, (err: any) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send("Le sensor a été supprimé");
+      }
+    })
   },
 };

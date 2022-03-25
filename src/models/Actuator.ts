@@ -21,3 +21,5 @@ const schemaActuator = new Schema<Actuator>({
   });
 
 const ActuatorModel = model<Actuator>('Actuator', schemaActuator);
+
+export default ActuatorModel;

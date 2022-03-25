@@ -2,15 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import SensorModel from "../models/Sensor"
 
 export default {
-  get: async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      res.json({ message: "Get Sensor work" });
-      return;
-    } catch (error) {
-      next(error);
-    }
-  },
-
+  
   allSensors: async (req: Request, res: Response, next: NextFunction) => {
     const sensors = SensorModel.find((err: any, sensors: any) => {
       if (err) {
