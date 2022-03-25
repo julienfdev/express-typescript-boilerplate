@@ -4,12 +4,18 @@ import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 
+// DB Connexion
+import connect from './db/dbConnect';
+
 // Routers
 import indexRouter from "@/routes/RoutesIndex";
 import actuatorRouter from "@/routes/RoutesActuator";
 import sensorRouter from "@/routes/RoutesSensors";
 import usersRouter from "@/routes/RoutesUser";
 const app = express();
+
+const db = 'mongodb://localhost:27017/API_MAISON_CONNECTEE';
+connect({db});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

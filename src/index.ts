@@ -7,7 +7,6 @@ import app from "./app";
 import d from "debug";
 import http from "http";
 const debug = d("express-typescript-boilerplate:server");
-import connect from './db/dbConnect';;
 
 /**
  * Get port from environment and store in Express.
@@ -70,9 +69,6 @@ function onError(error: any) {
       throw error;
   }
 }
-
-const db = 'mongodb://localhost:27017/API_MAISON_CONNECTEE';
-connect({db});
 
 /**
  * Event listener for HTTP server "listening" event.
