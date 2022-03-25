@@ -10,6 +10,16 @@ export default {
         res.send(users);
       }
   },)},
+
+  oneUser: async (req: Request, res: Response, next: NextFunction) => {
+    const user = UserModel.findById(req.params.id, (err: any, user: any) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(user);
+      }
+    });
+  },
  
   post: async (req: Request, res: Response, next: NextFunction) => {
     const user = new UserModel(req.body);
@@ -20,7 +30,34 @@ export default {
       res.send(user);
     }
   });
-},}
+},
+
+updateUser: async (req: Request, res: Response, next: NextFunction) => {
+  let user = UserModel.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    (err: any, user: any) => {
+      if (err) {
+        res.send(err);
+      } else {
+        res.send(user);
+      }
+    }
+  );
+},
+
+deleteUser: async (req: Request, res: Response, next: NextFunction) => {
+  const user = UserModel.deleteOne({ _id: req.params.id }, (err: any) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send("User deleted from database");
+    }
+  });
+},
+
+
+}
 
 
 /*
