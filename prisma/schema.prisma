@@ -23,11 +23,12 @@ model Actuator {
   type        ActuatorType
   designation String
   state       Boolean
+
 }
 
 model User {
   id       Int    @id @default(autoincrement())
-  email    String
+  email    String @unique
   password String
   username String
 }

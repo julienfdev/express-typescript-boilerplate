@@ -1,11 +1,10 @@
+import db from "@/db";
 import { NextFunction, Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 
 export default {
   getAll: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const result = await prisma.actuator.findMany();
+      const result = await db.actuator.findMany();
       res.json(result);
       return;
     } catch (error) {
@@ -22,7 +21,7 @@ export default {
   },
   update: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await prisma.actuator.update({
+      await db.actuator.update({
         data: { ...req.body },
         where: {
           id: parseInt(req.params.id),
@@ -37,7 +36,7 @@ export default {
   },
   post: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const actuator = await prisma.actuator.create({
+      const actuator = await db.actuator.create({
         data: {
           ...req.body,
         },
@@ -50,7 +49,7 @@ export default {
   },
   delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      await prisma.actuator.delete({
+      await db.actuator.delete({
         where: {
           id: parseInt(req.params.id),
         },

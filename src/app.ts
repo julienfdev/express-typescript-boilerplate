@@ -8,6 +8,7 @@ import cors from "cors";
 // Routers
 import indexRouter from "@/routes/Index";
 import actuatorRouter from "@/routes/Actuator";
+import sensorRouter from "@/routes/Sensor";
 import {
   PrismaClientKnownRequestError,
   PrismaClientUnknownRequestError,
@@ -25,7 +26,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/actuator", actuatorRouter);
-
+app.use("/sensor", sensorRouter);
 // catch 404
 app.use(function (req: Request, res: Response, next: NextFunction) {
   // handle it how it pleases you
@@ -52,6 +53,7 @@ app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
   } else if (err instanceof PrismaClientValidationError) {
     res.status(400).json({
       name: err.name,
+      message: err.message,
     });
   } else {
     res
