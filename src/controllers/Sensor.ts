@@ -21,11 +21,23 @@ type SensorGet = Sensor & { value: string };
 type SensorRange = {
   in: [number, number];
   out: [number, number];
+  unit: string;
 };
 
 const tempRange: SensorRange = {
   in: [0, 1023],
   out: [-20, 55],
+  unit: "°C",
+};
+const humidityRange: SensorRange = {
+  in: [0, 1023],
+  out: [0, 100],
+  unit: "%HR",
+};
+const baroRange: SensorRange = {
+  in: [0, 1023],
+  out: [950, 1150],
+  unit: "hPa",
 };
 
 const rawValueToMappedValue = (
@@ -39,11 +51,25 @@ const rawValueToMappedValue = (
   if (rawValue < range.in[0]) {
     rawValue = range.in[0];
   }
+
   const inSpread = range.in[1] - range.in[0];
   const outSpread = range.out[1] - range.out[0];
   const inProportion = rawValue / inSpread;
 
   return (range.out[0] + inProportion * outSpread).toFixed(1);
+};
+
+const getRange = (type: SensorType): SensorRange => {
+  switch (type) {
+    case SensorType.TEMPERATURE:
+      return tempRange;
+    case SensorType.HUMIDITY:
+      return humidityRange;
+    case SensorType.BARO:
+      return baroRange;
+    default:
+      return { in: [0, 1], out: [0, 1], unit: "" };
+  }
 };
 
 export default {
@@ -55,11 +81,16 @@ export default {
             id: sensor.id,
             type: sensor.type,
             designation: sensor.designation,
-            rawValue: sensor.rawBool || sensor.rawNumber,
-            value: (sensor.rawBool
-              ? sensor.rawBool
-              : rawValueToMappedValue(sensor.rawNumber || 0, tempRange)
-            )?.toString(),
+            rawValue:
+              sensor.rawBool !== null ? sensor.rawBool : sensor.rawNumber,
+            value:
+              (sensor.rawBool !== null
+                ? sensor.rawBool
+                : rawValueToMappedValue(
+                    sensor.rawNumber || 0,
+                    getRange(sensor.type as SensorType)
+                  )
+              )?.toString() + getRange(sensor.type as SensorType).unit,
           } as SensorGet;
         })
       );
@@ -119,7 +150,19 @@ export default {
   },
   post: async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const sensor = await db.sensor.create({ data: { ...req.body } });
+      const data = {
+        ...req.body,
+        ...(req.body.rawValue !== null || req.body.rawValue !== undefined
+          ? req.body.type === SensorType.PROXIMITY
+            ? { rawBool: req.body.rawValue }
+            : { rawNumber: req.body.rawValue }
+          : {}),
+      };
+      if (data.rawValue !== null || data.rawValue !== undefined) {
+        delete data.rawValue;
+      }
+      console.log(data);
+      const sensor = await db.sensor.create({ data });
       res.status(201).json({ message: "created", id: sensor.id });
       return;
     } catch (error) {
