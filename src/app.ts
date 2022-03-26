@@ -3,12 +3,20 @@ import express from "express";
 import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 
 // Routers
 import indexRouter from "@/routes/Index";
+import actuatorRouter from "@/routes/Actuator";
+import {
+  PrismaClientKnownRequestError,
+  PrismaClientUnknownRequestError,
+  PrismaClientValidationError,
+} from "@prisma/client/runtime";
 const app = express();
 
 // view engine setup
+app.use(cors({ origin: "http://localhost:8080" }));
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -16,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
+app.use("/actuator", actuatorRouter);
 
 // catch 404
 app.use(function (req: Request, res: Response, next: NextFunction) {
@@ -30,7 +39,25 @@ app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
-  res.status(err.status || 500).json(err);
+  if (err instanceof PrismaClientKnownRequestError) {
+    res.status(400).json({
+      code: err.code,
+      meta: err.meta,
+      name: err.name,
+    });
+  } else if (err instanceof PrismaClientUnknownRequestError) {
+    res.status(400).json({
+      name: err.name,
+    });
+  } else if (err instanceof PrismaClientValidationError) {
+    res.status(400).json({
+      name: err.name,
+    });
+  } else {
+    res
+      .status(err.status || 500)
+      .json(err.meta ? err.meta : err.message ? { message: err.message } : err);
+  }
 });
 
 export default app;

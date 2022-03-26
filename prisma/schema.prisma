@@ -6,6 +6,40 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Sensor {
+  id          Int        @id @default(autoincrement())
+  type        SensorType
+  designation String
+  rawNumber   Int?
+  rawBool     Boolean?
+}
+
+model Actuator {
+  id          Int          @id @default(autoincrement())
+  type        ActuatorType
+  designation String
+  state       Boolean
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String
+  password String
+  username String
+}
+
+enum ActuatorType {
+  BLINDS
+  LIGHT
+}
+
+enum SensorType {
+  TEMPERATURE
+  HUMIDITY
+  BARO
+  PROXIMITY
 }
