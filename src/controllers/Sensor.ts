@@ -1,4 +1,5 @@
 import db from "@/db";
+import apiResponse from "@/modules/api-response";
 import { decompressFromBase64 } from "@prisma/client/runtime";
 import { NextFunction, Request, Response } from "express";
 import { runInNewContext } from "vm";
@@ -76,23 +77,26 @@ export default {
   getAll: async (req: Request, res: Response, next: NextFunction) => {
     try {
       res.json(
-        (await db.sensor.findMany()).map((sensor) => {
-          return {
-            id: sensor.id,
-            type: sensor.type,
-            designation: sensor.designation,
-            rawValue:
-              sensor.rawBool !== null ? sensor.rawBool : sensor.rawNumber,
-            value:
-              (sensor.rawBool !== null
-                ? sensor.rawBool
-                : rawValueToMappedValue(
-                    sensor.rawNumber || 0,
-                    getRange(sensor.type as SensorType)
-                  )
-              )?.toString() + getRange(sensor.type as SensorType).unit,
-          } as SensorGet;
-        })
+        apiResponse(
+          false,
+          (await db.sensor.findMany()).map((sensor) => {
+            return {
+              id: sensor.id,
+              type: sensor.type,
+              designation: sensor.designation,
+              rawValue:
+                sensor.rawBool !== null ? sensor.rawBool : sensor.rawNumber,
+              value:
+                (sensor.rawBool !== null
+                  ? sensor.rawBool
+                  : rawValueToMappedValue(
+                      sensor.rawNumber || 0,
+                      getRange(sensor.type as SensorType)
+                    )
+                )?.toString() + getRange(sensor.type as SensorType).unit,
+            } as SensorGet;
+          })
+        )
       );
     } catch (error) {
       next(error);
@@ -106,16 +110,18 @@ export default {
       if (!sensor) {
         throw new Error("sensor_not_found");
       }
-      res.json({
-        id: sensor.id,
-        type: sensor.type,
-        designation: sensor.designation,
-        rawValue: sensor.rawBool || sensor.rawNumber,
-        value: (sensor.rawBool
-          ? sensor.rawBool
-          : rawValueToMappedValue(sensor.rawNumber || 0, tempRange)
-        )?.toString(),
-      });
+      res.json(
+        apiResponse(false, {
+          id: sensor.id,
+          type: sensor.type,
+          designation: sensor.designation,
+          rawValue: sensor.rawBool || sensor.rawNumber,
+          value: (sensor.rawBool
+            ? sensor.rawBool
+            : rawValueToMappedValue(sensor.rawNumber || 0, tempRange)
+          )?.toString(),
+        })
+      );
       return;
     } catch (error) {
       next(error);
@@ -142,7 +148,7 @@ export default {
         where: { id: parseInt(req.params.id) },
         data,
       });
-      res.json({ message: "updated" });
+      res.json(apiResponse(false, { message: "updated" }));
       return;
     } catch (error) {
       next(error);
@@ -163,7 +169,9 @@ export default {
       }
       console.log(data);
       const sensor = await db.sensor.create({ data });
-      res.status(201).json({ message: "created", id: sensor.id });
+      res
+        .status(201)
+        .json(apiResponse(false, { message: "created", id: sensor.id }));
       return;
     } catch (error) {
       next(error);
@@ -172,7 +180,7 @@ export default {
   delete: async (req: Request, res: Response, next: NextFunction) => {
     try {
       await db.sensor.delete({ where: { id: parseInt(req.params.id) } });
-      res.json({ message: "handled" });
+      res.json(apiResponse(false, { message: "handled" }));
       return;
     } catch (error) {
       next(error);

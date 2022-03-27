@@ -1,11 +1,12 @@
 import db from "@/db";
 import { NextFunction, Request, Response } from "express";
+import apiResponse from "@/modules/api-response";
 
 export default {
   getAll: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const result = await db.actuator.findMany();
-      res.json(result);
+      res.json(apiResponse(false, result));
       return;
     } catch (error) {
       next(error);
@@ -27,7 +28,7 @@ export default {
           id: parseInt(req.params.id),
         },
       });
-      res.json({ message: "handled" });
+      res.json(apiResponse(false, { message: "handled" }));
       return;
     } catch (error) {
       console.error(error);
@@ -41,7 +42,9 @@ export default {
           ...req.body,
         },
       });
-      res.status(201).json({ message: "created", id: actuator.id });
+      res
+        .status(201)
+        .json(apiResponse(false, { message: "created", id: actuator.id }));
       return;
     } catch (error) {
       next(error);
@@ -54,7 +57,7 @@ export default {
           id: parseInt(req.params.id),
         },
       });
-      res.json({ message: "handled" });
+      res.json(apiResponse(false, { message: "handled" }));
       return;
     } catch (error) {
       next(error);

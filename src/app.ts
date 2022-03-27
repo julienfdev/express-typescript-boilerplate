@@ -14,10 +14,16 @@ import {
   PrismaClientUnknownRequestError,
   PrismaClientValidationError,
 } from "@prisma/client/runtime";
+import apiResponse from "./modules/api-response";
 const app = express();
 
 // view engine setup
-const whitelist = ["http://localhost:8080", "http://192.168.1.34:8080", "http://localhost", "http://192.168.1.34"];
+const whitelist = [
+  "http://localhost:8080",
+  "http://192.168.1.34:8080",
+  "http://localhost",
+  "http://192.168.1.34",
+];
 var corsOptions = {
   origin: (origin, callback) => {
     if (whitelist.indexOf(origin!) !== -1) {
@@ -40,7 +46,7 @@ app.use("/sensor", sensorRouter);
 // catch 404
 app.use(function (req: Request, res: Response, next: NextFunction) {
   // handle it how it pleases you
-  res.status(404).json({ message: "not_found" });
+  res.status(404).json(apiResponse(true, { message: "not_found" }));
 });
 
 // error handler
@@ -68,7 +74,12 @@ app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
   } else {
     res
       .status(err.status || 500)
-      .json(err.meta ? err.meta : err.message ? { message: err.message } : err);
+      .json(
+        apiResponse(
+          true,
+          err.meta ? err.meta : err.message ? { message: err.message } : err
+        )
+      );
   }
 });
 
