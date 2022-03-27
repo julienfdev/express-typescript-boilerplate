@@ -3,7 +3,7 @@ import express from "express";
 import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 
 // Routers
 import indexRouter from "@/routes/Index";
@@ -17,7 +17,17 @@ import {
 const app = express();
 
 // view engine setup
-app.use(cors({ origin: "http://localhost:8080" }));
+const whitelist = ["http://localhost:8080", "http://192.168.1.34:8080", "http://localhost", "http://192.168.1.34"];
+var corsOptions = {
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin!) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+} as CorsOptions;
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

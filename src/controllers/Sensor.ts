@@ -54,7 +54,7 @@ const rawValueToMappedValue = (
 
   const inSpread = range.in[1] - range.in[0];
   const outSpread = range.out[1] - range.out[0];
-  const inProportion = rawValue / inSpread;
+  const inProportion = (rawValue - range.in[0]) / inSpread;
 
   return (range.out[0] + inProportion * outSpread).toFixed(1);
 };
