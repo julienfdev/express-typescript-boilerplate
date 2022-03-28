@@ -6,7 +6,7 @@ const router = express.Router();
 router.get("/", Sensor.getAll);
 router.post("/", Sensor.post);
 router.get("/:id", Sensor.getOne);
-router.put("/:id", Sensor.update);
+router.patch("/:id", Sensor.update);
 router.delete("/:id", Sensor.delete);
 
 export default router;
