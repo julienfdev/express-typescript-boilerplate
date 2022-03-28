@@ -9,6 +9,7 @@ import cors, { CorsOptions } from "cors";
 import indexRouter from "@/routes/Index";
 import actuatorRouter from "@/routes/Actuator";
 import sensorRouter from "@/routes/Sensor";
+import userRouter from "@/routes/User";
 import {
   PrismaClientKnownRequestError,
   PrismaClientUnknownRequestError,
@@ -43,6 +44,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/actuator", actuatorRouter);
 app.use("/sensor", sensorRouter);
+app.use("/user", userRouter);
 // catch 404
 app.use(function (req: Request, res: Response, next: NextFunction) {
   // handle it how it pleases you
