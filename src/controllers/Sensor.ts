@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response } from "express";
 import SensorModel from "../models/Sensor"
-
+import ApiResponse from "@/modules/Interface";
 export default {
   
   allSensors: async (req: Request, res: Response, next: NextFunction) => {
     const sensors = SensorModel.find((err: any, sensors: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", sensors ,err)
+        res.send(resultat);
       } else {
-        res.send(sensors);
+        const resultat = new ApiResponse("Liste des sensors :", sensors, err)
+        res.send(resultat);
       }
     },)
   },
@@ -16,9 +18,11 @@ export default {
   oneSensor: async (req: Request, res: Response, next: NextFunction) => {
     const sensor = SensorModel.findById(req.params.id, (err: any, sensor: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", sensor ,err)
+        res.send(resultat);
       } else {
-        res.send(sensor);
+        const resultat = new ApiResponse("Sensor :", sensor, err)
+        res.send(resultat);
       }
     },)
   },
@@ -27,9 +31,11 @@ export default {
     const sensor = new SensorModel(req.body);
     sensor.save((err: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", sensor ,err)
+        res.send(resultat);
       } else {
-        res.send("Created! id: "+sensor._id);
+        const resultat = new ApiResponse("Sensor créé :", sensor._id, err)
+        res.send(resultat);
       }
     })
   },
@@ -39,9 +45,11 @@ export default {
       req.body,
       (err: any, sensor: any) => {
         if (err) {
-          res.send(err);
+          const resultat = new ApiResponse("Erreur :", sensor ,err)
+        res.send(resultat);
         } else {
-          res.send(sensor);
+          const resultat = new ApiResponse("Sensor modifié :", sensor._id, err)
+        res.send(resultat);
         }
       }
     )
@@ -49,9 +57,11 @@ export default {
   deleteSensor: async (req: Request, res: Response, next: NextFunction) => {
     const sensor = SensorModel.deleteOne({ _id: req.params.id}, (err: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", sensor ,err)
+        res.send(resultat);
       } else {
-        res.send("Le sensor a été supprimé");
+        const resultat = new ApiResponse("Sensor supprimé.", err)
+        res.send(resultat);
       }
     })
   },

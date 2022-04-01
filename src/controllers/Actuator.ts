@@ -13,7 +13,7 @@ export default {
         const resultat = new ApiResponse("Erreur :", actuators ,err)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("liste des actuators :", actuators, err)
+        const resultat = new ApiResponse("Liste des actuators :", actuators, err)
         res.send(resultat);
       }
     },)
@@ -67,7 +67,7 @@ export default {
         const resultat = new ApiResponse("Erreur :", actuator ,err)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Actuator supprimé :", err)
+        const resultat = new ApiResponse("Actuator supprimé.", err)
         res.send(resultat);
       }
     })
