@@ -1,8 +1,8 @@
 import { Schema, model, connect } from "mongoose";
 
 export enum ActuatorType{
-    BLINDS,
-    LIGHT
+    BLINDS = "BLINDS",
+    LIGHT = "LIGHT"
 }
 
 type Actuator = {

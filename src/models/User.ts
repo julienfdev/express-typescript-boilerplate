@@ -14,4 +14,9 @@ const schema = new Schema<User>({
 
 const UserModel = model<User>('User', schema);
 
+type UserGet = Omit<User, "password">
+type UserPost = Omit<User, "id">
+type UserLogin = Pick<User, "email" | "password">
+type UserUpdate = Pick<Partial<UserPost>, "username">
+
 export default UserModel;

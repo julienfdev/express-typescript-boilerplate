@@ -1,10 +1,10 @@
 import { Schema, model, connect } from "mongoose";
 
 export enum SensorType{
-    TEMPERATURE,
-    HUMIDITY,
-    BARO,
-    PROXIMITY
+    TEMPERATURE = "TEMPERATURE",
+    HUMIDITY = "HUMIDITY",
+    BARO = "BARO",
+    PROXIMITY = "PROXIMITY"
 }
 
 type Sensor = {
