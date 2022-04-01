@@ -33,7 +33,7 @@ export default {
       const resultat = new ApiResponse("Erreur :", user ,err)
           res.send(resultat);
     } else {
-      const resultat = new ApiResponse("Utilisateur créé :", user._id ,err)
+      const resultat = new ApiResponse("Utilisateur créé :", user ,err)
         res.send(resultat);
     }
   });
@@ -48,7 +48,7 @@ updateUser: async (req: Request, res: Response, next: NextFunction) => {
         const resultat = new ApiResponse("Erreur :", user ,err)
           res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Utilisateur mis à jour :", user.id ,err)
+        const resultat = new ApiResponse("Utilisateur mis à jour :", user ,err)
         res.send(resultat);
       }
     }

@@ -34,7 +34,7 @@ export default {
         const resultat = new ApiResponse("Erreur :", sensor ,err)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Sensor créé :", sensor._id, err)
+        const resultat = new ApiResponse("Sensor créé :", sensor, err)
         res.send(resultat);
       }
     })
@@ -48,7 +48,7 @@ export default {
           const resultat = new ApiResponse("Erreur :", sensor ,err)
         res.send(resultat);
         } else {
-          const resultat = new ApiResponse("Sensor modifié :", sensor._id, err)
+          const resultat = new ApiResponse("Sensor modifié :", sensor, err)
         res.send(resultat);
         }
       }

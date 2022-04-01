@@ -39,7 +39,7 @@ export default {
         const resultat = new ApiResponse("Erreur :", actuator ,err)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Actuator créé :", actuator._id, err)
+        const resultat = new ApiResponse("Actuator créé :", actuator, err)
         res.send(resultat);
       }
     })
@@ -54,7 +54,7 @@ export default {
           const resultat = new ApiResponse("Erreur :", actuator ,err)
           res.send(resultat);
         } else {
-          const resultat = new ApiResponse("Actuator modifié :", actuator._id, err)
+          const resultat = new ApiResponse("Actuator modifié :", actuator, err)
           res.send(resultat);
         }
       }

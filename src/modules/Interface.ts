@@ -1,8 +1,8 @@
 export class ApiResponse{
     response: string;
     data: any;
-    error: ErrorConstructor | undefined;
-    constructor(response : string, data?: Record<string, any>, error? : ErrorConstructor){
+    error: any;
+    constructor(response : string, data?: Record<string, any>, error? : Record<string, any>){
         this.response = response;
         this.data = data;
     }
