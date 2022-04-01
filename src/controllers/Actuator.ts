@@ -1,22 +1,31 @@
 import { NextFunction, Request, Response } from "express";
 import ActuatorModel from "../models/Actuator"
+import ApiResponse from "@/modules/Interface";
+
 export default {
+
+
+  //si requete marche instancier class ApiResponse avec a l'interieur ex : "tableau de actuators" + [actuators]
+  //si ca marche pas renvoyer ApiResponse avec error as Error
   allActuators: async (req: Request, res: Response, next: NextFunction) => {
     const sensors = ActuatorModel.find((err: any, actuators: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", actuators ,Error)
+        res.send(resultat);
       } else {
-        res.send(actuators);
+        const resultat = new ApiResponse("liste des actuators :", actuators, Error)
+        res.send(resultat);
       }
     },)
   },
 
   oneActuator: async (req: Request, res: Response, next: NextFunction) => {
+    
     const sensor = ActuatorModel.findById(req.params.id, (err: any, actuator: any) => {
       if (err) {
         res.send(err);
       } else {
-        res.send(actuator);
+       res.send(actuator);
       }
     },)
   },
