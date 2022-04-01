@@ -10,10 +10,10 @@ export default {
   allActuators: async (req: Request, res: Response, next: NextFunction) => {
     const sensors = ActuatorModel.find((err: any, actuators: any) => {
       if (err) {
-        const resultat = new ApiResponse("Erreur :", actuators ,Error)
+        const resultat = new ApiResponse("Erreur :", actuators ,err)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("liste des actuators :", actuators, Error)
+        const resultat = new ApiResponse("liste des actuators :", actuators, err)
         res.send(resultat);
       }
     },)
@@ -23,9 +23,11 @@ export default {
     
     const sensor = ActuatorModel.findById(req.params.id, (err: any, actuator: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", actuator ,err)
+        res.send(resultat);
       } else {
-       res.send(actuator);
+        const resultat = new ApiResponse("Actuator :", actuator, err)
+        res.send(resultat);
       }
     },)
   },
@@ -34,9 +36,11 @@ export default {
     const actuator = new ActuatorModel(req.body);
     actuator.save((err: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", actuator ,err)
+        res.send(resultat);
       } else {
-        res.send("Created! id: "+actuator._id);
+        const resultat = new ApiResponse("Actuator créé :", actuator._id, err)
+        res.send(resultat);
       }
     })
   },
@@ -47,9 +51,11 @@ export default {
       req.body,
       (err: any, actuator: any) => {
         if (err) {
-          res.send(err);
+          const resultat = new ApiResponse("Erreur :", actuator ,err)
+          res.send(resultat);
         } else {
-          res.send(actuator);
+          const resultat = new ApiResponse("Actuator modifié :", actuator._id, err)
+          res.send(resultat);
         }
       }
     )
@@ -58,9 +64,11 @@ export default {
   deleteActuator: async (req: Request, res: Response, next: NextFunction) => {
     const actuator = ActuatorModel.deleteOne({ _id: req.params.id}, (err: any) => {
       if (err) {
-        res.send(err);
+        const resultat = new ApiResponse("Erreur :", actuator ,err)
+        res.send(resultat);
       } else {
-        res.send("Le sensor a été supprimé");
+        const resultat = new ApiResponse("Actuator supprimé :", err)
+        res.send(resultat);
       }
     })
   },
