@@ -10,10 +10,10 @@ export default {
   allActuators: async (req: Request, res: Response, next: NextFunction) => {
     const sensors = ActuatorModel.find((err: any, actuators: any) => {
       if (err) {
-        const resultat = new ApiResponse("Erreur :", actuators ,err)
+        const resultat = new ApiResponse("Erreur :", undefined ,err as Error)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Liste des actuators :", actuators, err)
+        const resultat = new ApiResponse("Liste des actuators :", actuators, undefined)
         res.send(resultat);
       }
     },)
@@ -23,10 +23,10 @@ export default {
     
     const sensor = ActuatorModel.findById(req.params.id, (err: any, actuator: any) => {
       if (err) {
-        const resultat = new ApiResponse("Erreur :", actuator ,err)
+        const resultat = new ApiResponse("Erreur :", undefined ,err as Error)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Actuator :", actuator, err)
+        const resultat = new ApiResponse("Actuator :", actuator, undefined)
         res.send(resultat);
       }
     },)
@@ -36,10 +36,10 @@ export default {
     const actuator = new ActuatorModel(req.body);
     actuator.save((err: any) => {
       if (err) {
-        const resultat = new ApiResponse("Erreur :", actuator ,err)
+        const resultat = new ApiResponse("Erreur :", undefined ,err as Error)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Actuator créé :", actuator, err)
+        const resultat = new ApiResponse("Actuator créé :", actuator, undefined)
         res.send(resultat);
       }
     })
@@ -51,10 +51,10 @@ export default {
       req.body,
       (err: any, actuator: any) => {
         if (err) {
-          const resultat = new ApiResponse("Erreur :", actuator ,err)
+          const resultat = new ApiResponse("Erreur :", undefined ,err as Error)
           res.send(resultat);
         } else {
-          const resultat = new ApiResponse("Actuator modifié :", actuator, err)
+          const resultat = new ApiResponse("Actuator modifié :", actuator, undefined)
           res.send(resultat);
         }
       }
@@ -64,10 +64,10 @@ export default {
   deleteActuator: async (req: Request, res: Response, next: NextFunction) => {
     const actuator = ActuatorModel.deleteOne({ _id: req.params.id}, (err: any) => {
       if (err) {
-        const resultat = new ApiResponse("Erreur :", actuator ,err)
+        const resultat = new ApiResponse("Erreur :", undefined ,err as Error)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Actuator supprimé.", err)
+        const resultat = new ApiResponse("Actuator supprimé.", undefined, undefined)
         res.send(resultat);
       }
     })
