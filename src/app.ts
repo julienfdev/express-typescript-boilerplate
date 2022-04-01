@@ -3,6 +3,7 @@ import express from "express";
 import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
+import cors from 'cors';
 
 // DB Connexion
 import connect from './db/dbConnect';
@@ -15,11 +16,18 @@ import usersRouter from "@/routes/RoutesUser";
 const app = express();
 
 const db = 'mongodb://localhost:27017/API_MAISON_CONNECTEE';
-connect({db});
+connect({ db });
+
+const allowedOrigins = ['http://localhost:8080'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins
+};
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.use(logger("dev"));
+app.use(cors(options));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
