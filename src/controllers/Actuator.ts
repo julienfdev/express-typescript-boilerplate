@@ -27,7 +27,7 @@ export default {
       if (err) {
         res.send(err);
       } else {
-        res.send(actuator);
+        res.send("Created! id: "+actuator._id);
       }
     })
   },

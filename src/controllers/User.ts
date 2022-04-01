@@ -27,7 +27,7 @@ export default {
     if (err) {
       res.send(err);
     } else {
-      res.send(user);
+      res.send("Created! id: "+user._id);
     }
   });
 },

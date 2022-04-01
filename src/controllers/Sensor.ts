@@ -29,7 +29,7 @@ export default {
       if (err) {
         res.send(err);
       } else {
-        res.send(sensor);
+        res.send("Created! id: "+sensor._id);
       }
     })
   },
