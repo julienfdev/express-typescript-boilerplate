@@ -3,10 +3,12 @@ import express from "express";
 const router = express.Router();
 
 /* user page. */
-router.get("/user", User.allUsers);
-router.get("/user/:id", User.oneUser);
 router.post("/user", User.post);
 router.post("/user/login", User.postLogin);
+
+router.get("/user", User.allUsers);
+router.get("/user/:id", User.oneUser);
+
 router.patch("/user/:id", User.updateUser);
 router.delete("/user/:id", User.deleteUser);
 
