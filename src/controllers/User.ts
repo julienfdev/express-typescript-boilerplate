@@ -3,6 +3,7 @@ import UserModel from "../models/User";
 import ApiResponse from "@/modules/Interface";
 import argon2 from "argon2";
 import { signJwt, verifyJwt } from "@/utils/auth.utils";
+import { argon2Hash, argon2Verify } from "@/utils/argon2.utils";
 
 export default {
   allUsers: async (req: Request, res: Response, next: NextFunction) => {
@@ -44,19 +45,8 @@ export default {
       throw new Error("l'Utilisateur est déjà existant");
     }
 
-    try {
-      const hash = await argon2.hash(password);
-      user.password = hash;
-    } catch {
-      throw new Error("Erreur de Hashage");
-    }
-
-    let token: string;
-    try {
-      token = signJwt(req.params.id, req.params.email);
-    } catch {
-      throw new Error("Erreur de création du token");
-    }
+    user.password = await argon2Hash(password);
+    const token = signJwt(user.id, email);
 
     user.save((err: any) => {
       if (err) {
@@ -77,16 +67,10 @@ export default {
       throw new Error("Utilisateur non existant");
     }
 
-    let token: string;
-    try {
-      token = signJwt(user.id, email);
-
-    } catch {
-      throw new Error("Erreur de création du token");
-    }
+    const token = signJwt(user.id, email);
 
     try {
-      if (await argon2.verify(user.password, password)) {
+      if (await argon2Verify(user.password, password)) {
         const resultat = new ApiResponse("succes", { token: token }, undefined);
         res.send(resultat);
       } else {
