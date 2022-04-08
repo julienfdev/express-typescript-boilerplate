@@ -14,9 +14,11 @@ import actuatorRouter from "@/routes/RoutesActuator";
 import sensorRouter from "@/routes/RoutesSensors";
 import usersRouter from "@/routes/RoutesUser";
 import ApiResponse from "./modules/Interface";
+import config from "./utils/config";
+
 const app = express();
 
-const db = 'mongodb://localhost:27017/API_MAISON_CONNECTEE';
+const db = config.db;
 connect({ db });
 
 const allowedOrigins = ['http://localhost:8080'];
