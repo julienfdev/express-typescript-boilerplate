@@ -1,14 +1,6 @@
-import * as xss from "xss";
+import xss from 'xss';
 
- interface ICustomWhiteList extends XSS.IWhiteList {
-   view?: string[];
- }
- 
- 
- const whiteList: ICustomWhiteList = xss.getDefaultWhiteList();
- console.log(whiteList.abbr);
- whiteList.view = ["class", "style", "id"];
- console.log(whiteList);
+export function xssProtect(html: string) {
 
- export default whiteList;
-
+  return xss(html);
+};
