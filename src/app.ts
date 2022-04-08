@@ -14,7 +14,7 @@ import actuatorRouter from "@/routes/RoutesActuator";
 import sensorRouter from "@/routes/RoutesSensors";
 import usersRouter from "@/routes/RoutesUser";
 import ApiResponse from "./modules/Interface";
-import config from "./utils/config";
+import config from "./config";
 
 const app = express();
 

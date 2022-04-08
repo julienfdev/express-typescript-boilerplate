@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import UserModel from "../models/User";
 import ApiResponse from "@/modules/Interface";
 import argon2 from "argon2";
-import { signJwt, verifyJwt } from "@/utils/auth.utils";
-import { argon2Hash, argon2Verify } from "@/utils/argon2.utils";
+import { signJwt, verifyJwt } from "@/middlewares/auth.utils";
+import { argon2Hash, argon2Verify } from "@/middlewares/argon2.utils";
 
 export default {
   allUsers: async (req: Request, res: Response, next: NextFunction) => {

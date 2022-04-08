@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import SensorModel from "../models/Sensor"
 import ApiResponse from "@/modules/Interface";
-import { verifyJwt } from "@/utils/auth.utils";
+import { verifyJwt } from "@/middlewares/auth.utils";
 export default {
   
   allSensors: async (req: Request, res: Response, next: NextFunction) => {
