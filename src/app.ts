@@ -13,6 +13,7 @@ import indexRouter from "@/routes/RoutesIndex";
 import actuatorRouter from "@/routes/RoutesActuator";
 import sensorRouter from "@/routes/RoutesSensors";
 import usersRouter from "@/routes/RoutesUser";
+import ApiResponse from "./modules/Interface";
 const app = express();
 
 const db = 'mongodb://localhost:27017/API_MAISON_CONNECTEE';
@@ -46,13 +47,7 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
 
 // error handler
 app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+res.status(err.status || 500).json(new ApiResponse("Error", undefined, err as Error));
 });
 
 export default app;
