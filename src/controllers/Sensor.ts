@@ -2,18 +2,30 @@ import { NextFunction, Request, Response } from "express";
 import SensorModel from "../models/Sensor"
 import ApiResponse from "@/modules/Interface";
 import { verifyJwt } from "@/middlewares/auth";
+import { convert } from "@/converter/Converter";
 export default {
   
   allSensors: async (req: Request, res: Response, next: NextFunction) => {
 
     verifyJwt(req.headers.authorization!.split(" "));
-    
+
+
     const sensors = SensorModel.find((err: any, sensors: any) => {
       if (err) {
         const resultat = new ApiResponse("Erreur :", undefined ,err as Error)
         res.send(resultat);
       } else {
-        const resultat = new ApiResponse("Liste des sensors :", sensors, undefined)
+        //utilisation du mapping pour afficher la valeur convertie dans json
+        const map = sensors.map((sensorTemp: { _id: any; type: String; designation: any; rawValue: number | boolean; }) => {
+          return {
+            id: sensorTemp._id,
+            type: sensorTemp.type,
+            designation: sensorTemp.designation,
+            rawValue: sensorTemp.rawValue,
+            value: convert(sensorTemp.rawValue,sensorTemp.type), //conversion de la rawvalue en valeur selon le type
+          };
+        });
+        const resultat = new ApiResponse("Liste des sensors :", map, undefined)
         res.send(resultat);
       }
     },)

@@ -8,7 +8,7 @@ export enum SensorType {
 }
 
 type Sensor = {
-    type?: SensorType
+    type: SensorType
     designation: string
     rawValue: number | boolean
 }
@@ -20,7 +20,7 @@ type SensorUpdate = Partial<SensorPost>
 const schemaSensor = new Schema<Sensor>({
     type: { type: String, enum: Object.values(SensorType) },
     designation: { type: String, required: true },
-    rawValue: { type: Number, required: true }
+    rawValue: { type: Number || Boolean, required: true }
 });
 
 schemaSensor.set('toJSON', {
