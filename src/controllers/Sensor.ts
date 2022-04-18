@@ -16,13 +16,13 @@ export default {
         res.send(resultat);
       } else {
         //utilisation du mapping pour afficher la valeur convertie dans json
-        const map = sensors.map((sensorTemp: { _id: any; type: String; designation: any; rawValue: number | boolean; }) => {
+        const map = sensors.map((convertSensor: { _id: any; type: String; designation: any; rawValue: number | boolean; }) => {
           return {
-            id: sensorTemp._id,
-            type: sensorTemp.type,
-            designation: sensorTemp.designation,
-            rawValue: sensorTemp.rawValue,
-            value: convert(sensorTemp.rawValue,sensorTemp.type), //conversion de la rawvalue en valeur selon le type
+            id: convertSensor._id,
+            type: convertSensor.type,
+            designation: convertSensor.designation,
+            rawValue: convertSensor.rawValue,
+            value: convert(convertSensor.rawValue,convertSensor.type), //conversion de la rawvalue en valeur selon le type
           };
         });
         const resultat = new ApiResponse("Liste des sensors :", map, undefined)
