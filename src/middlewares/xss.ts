@@ -6,7 +6,7 @@ var xssScript = async function (req: Request, res: Response, next: NextFunction)
 
   try {
     for (const property in req.body){
-      if (typeof property === 'string') { 
+      if (typeof property === 'string') {
         xss(req.body[property])
       }
     }

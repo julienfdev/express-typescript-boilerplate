@@ -53,6 +53,7 @@ export default {
       }
     })
   },
+
   updateSensor: async (req: Request, res: Response, next: NextFunction) => {
 
     let sensor = SensorModel.findByIdAndUpdate(
@@ -69,6 +70,7 @@ export default {
       }
     )
   },
+  
   deleteSensor: async (req: Request, res: Response, next: NextFunction) => {
     
     const sensor = SensorModel.deleteOne({ _id: req.params.id}, (err: any) => {
