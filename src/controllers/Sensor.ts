@@ -1,14 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import SensorModel from "../models/Sensor"
 import ApiResponse from "@/modules/Interface";
-import { verifyJwt } from "@/middlewares/auth";
 import { convert } from "@/converter/Converter";
 export default {
   
   allSensors: async (req: Request, res: Response, next: NextFunction) => {
-
-    verifyJwt(req.headers.authorization!.split(" "));
-
 
     const sensors = SensorModel.find((err: any, sensors: any) => {
       if (err) {
@@ -33,8 +29,6 @@ export default {
 
   oneSensor: async (req: Request, res: Response, next: NextFunction) => {
 
-    verifyJwt(req.headers.authorization!.split(" "));
-
     const sensor = SensorModel.findById(req.params.id, (err: any, sensor: any) => {
       if (err) {
         const resultat = new ApiResponse("Erreur :", undefined ,err as Error)
@@ -48,8 +42,6 @@ export default {
 
   postSensor: async (req: Request, res: Response, next: NextFunction) => {
 
-    verifyJwt(req.headers.authorization!.split(" "));
-
     const sensor = new SensorModel(req.body);
     sensor.save((err: any) => {
       if (err) {
@@ -62,8 +54,6 @@ export default {
     })
   },
   updateSensor: async (req: Request, res: Response, next: NextFunction) => {
-
-    verifyJwt(req.headers.authorization!.split(" "));
 
     let sensor = SensorModel.findByIdAndUpdate(
       req.params.id,
@@ -80,8 +70,6 @@ export default {
     )
   },
   deleteSensor: async (req: Request, res: Response, next: NextFunction) => {
-
-    verifyJwt(req.headers.authorization!.split(" "));
     
     const sensor = SensorModel.deleteOne({ _id: req.params.id}, (err: any) => {
       if (err) {

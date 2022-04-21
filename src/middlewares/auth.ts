@@ -1,21 +1,18 @@
+import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import config from "../config";
 
-export function signJwt(_id: string, _email: string) {
+var tokenVerify = async function (req: Request, res: Response, next: NextFunction) {
 
+    let tokenHeader = req.headers.authorization!.split(" ");
     try {
-        return jwt.sign({ id: _id, email: _email }, config.jwtSecret, { expiresIn: config.jwtExpiresIn });
+        jwt.verify(tokenHeader[1], config.jwtSecret);
+        console.log(tokenHeader[1]);
+        next();
     } catch (error) {
-        throw new Error("jwt sign error");
-    }
-    
-};
-
-export function verifyJwt(tokenHeader: string[]) {
-
-    try {
-        return jwt.verify(tokenHeader[1], config.jwtSecret);
-    } catch (error) {
+        console.log(tokenHeader[1]);
         throw new Error("jwt verify error");
-    } 
+    }
 };
+
+export default tokenVerify

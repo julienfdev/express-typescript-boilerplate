@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import ActuatorModel from "../models/Actuator"
 import ApiResponse from "@/modules/Interface";
-import { verifyJwt } from "@/middlewares/auth";
 
 export default {
 
@@ -9,8 +8,6 @@ export default {
   //si requete marche instancier class ApiResponse avec a l'interieur ex : "tableau de actuators" + [actuators]
   //si ca marche pas renvoyer ApiResponse avec error as Error
   allActuators: async (req: Request, res: Response, next: NextFunction) => {
-
-    verifyJwt(req.headers.authorization!.split(" "));
     
     const sensors = ActuatorModel.find((err: any, actuators: any) => {
       if (err) {
@@ -24,8 +21,6 @@ export default {
   },
 
   oneActuator: async (req: Request, res: Response, next: NextFunction) => {
-
-    verifyJwt(req.headers.authorization!.split(" "));
     
     const sensor = ActuatorModel.findById(req.params.id, (err: any, actuator: any) => {
       if (err) {
@@ -40,8 +35,6 @@ export default {
 
   postActuator: async (req: Request, res: Response, next: NextFunction) => {
 
-    verifyJwt(req.headers.authorization!.split(" "));
-
     const actuator = new ActuatorModel(req.body);
     actuator.save((err: any) => {
       if (err) {
@@ -55,8 +48,6 @@ export default {
   },
 
   updateActuator: async (req: Request, res: Response, next: NextFunction) => {
-
-    verifyJwt(req.headers.authorization!.split(" "));
 
     let actuator = ActuatorModel.findByIdAndUpdate(
       req.params.id,
@@ -74,9 +65,6 @@ export default {
   },
 
   deleteActuator: async (req: Request, res: Response, next: NextFunction) => {
-
-    verifyJwt(req.headers.authorization!.split(" "));
-
     
     const actuator = ActuatorModel.deleteOne({ _id: req.params.id}, (err: any) => {
       if (err) {
