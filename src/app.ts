@@ -4,6 +4,7 @@ import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 import cors from 'cors';
+//import auth, { xssProtect } from "@/middlewares/xss"
 
 // DB Connexion
 import connect from './db/dbConnect';
@@ -15,6 +16,7 @@ import sensorRouter from "@/routes/RoutesSensors";
 import usersRouter from "@/routes/RoutesUser";
 import ApiResponse from "./modules/Interface";
 import config from "./config";
+import xssScript from "@/middlewares/xss";
 
 const app = express();
 
@@ -35,6 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(xssScript);
 
 app.use("/", indexRouter);
 app.use("/", actuatorRouter);

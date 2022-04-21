@@ -7,7 +7,6 @@ var tokenVerify = async function (req: Request, res: Response, next: NextFunctio
     let tokenHeader = req.headers.authorization!.split(" ");
     try {
         jwt.verify(tokenHeader[1], config.jwtSecret);
-        console.log(tokenHeader[1]);
         next();
     } catch (error) {
         console.log(tokenHeader[1]);
